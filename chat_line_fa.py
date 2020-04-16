@@ -4,10 +4,10 @@ def read_file(filename):
         lines = []
         for line in f:
             lines.append(line.strip().split('\t'))
-        # print(lines)
         return lines
 
-# 刪除不要的欄位(日期.空行)
+
+# 篩選欄位
 def field(lines):
     fields = []
     for fie in lines:
@@ -15,24 +15,36 @@ def field(lines):
             continue
         elif not str(fie[0]):  # 如果是空行就忽略
             continue
-        fields.append(fie)
+        elif len(fie) > 1:  # 如果是清單禮物件>1,則從第2個物件開始加入清單
+            fields.append(fie[1:])
+        else:  # 除了以上條件以外就直接加入清單
+            fields.append(fie)
     return fields
 
-# 篩選要加入的欄位
-def del_line(lines):
+
+# 格式轉換
+def convert(lines):
     news = []
     for new in lines:
-        if len(new) == 1:  # 如果是清單禮物件=1,就加入清單
+        if len(new) > 1:
+            news.append(new[0] + '： ' + new[1])
+        else:
             news.append(new)
-        elif len(new) > 1:  # 如果是清單禮物件>1,則從第2個物件開始加入清單
-            news.append(new[1:])
     return news
+
+
+# 儲存檔案
+def save(file_name, lines):
+    with open(file_name, 'w', encoding='utf-8') as f:
+        for line in lines:
+            f.write(str(line) + '\n')
+
 
 def main():
     filename = 'yuzzzzzzzzzzz.txt'
     lines = read_file(filename)
     lines = field(lines)
-    print(del_line(lines))
-
-
+    lines = convert(lines)
+    save('[LINE]fa_output.csv',lines)
+    save('[LINE]fa_output.txt',lines)
 main()

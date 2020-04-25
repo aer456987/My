@@ -35,8 +35,8 @@ def convert(lines):
     return news
 
 
-def save(file_name, lines, encoding='utf-8'):
-    with open(file_name, 'w') as f:
+def save(file_name, lines):
+    with open(file_name, 'w', encoding='utf-8') as f:
         for line in lines:
             f.write(line + '\n')
 

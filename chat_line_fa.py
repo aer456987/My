@@ -48,4 +48,4 @@ def main():
     save('轉換後與yuz.txt', lines)
     # save('轉換後與yuz.csv',lines)
 
-main():
+main()

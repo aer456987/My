@@ -1,23 +1,23 @@
-# 讀取檔案(刪除\n空白.用\t切割)
+# 讀取檔案(刪除\n空白)
 def read_file(filename):
     with open(filename, 'r', encoding='utf-8-sig') as f:
         lines = []
         for line in f:
-            lines.append(line.strip().split('\t'))
-        return lines
+            lines.append(line.strip())
+    return lines
 
 
 # 篩選欄位
 def field(lines):
     fields = []
     for fie in lines:
-        if '2019/' in fie[0]:     # 如果裡面含有'2019/'就忽略
+        if not fie:                # 如果是空行就忽略
             continue
-        elif not str(fie[0]):     # 如果是空行就忽略
+        elif '2019/' in fie[0]:    # 如果裡面含有'2019/'就忽略
             continue
-        elif len(fie) > 1:        # 如果是清單禮物件>1,就從第2個物件開始加入清單
-            fields.append(fie[1:])
-        else:                     # 除了以上條件以外就直接加入清單
+        elif fie[2] == ':':        # 如果第三個字串是':'就從第六個字串開始加入清單
+            fields.append(fie[6:])
+        else:
             fields.append(fie)
     return fields
 
@@ -26,28 +26,26 @@ def field(lines):
 def convert(lines):
     news = []
     for new in lines:
-        if len(new) > 1:
-            if new[0] == 'Yuzzzzzz':
-                new[0] = 'Yuz'
-            news.append(new[0] + '： ' + new[1])
+        if new[:8] == 'Yuzzzzzz':
+            news.append(new[:3] + ': ' + new[9:])
+        elif new[:4] in '羽鳥吟仁':
+            news.append(new[:4] + ': ' + new[5:])
         else:
             news.append(new)
     return news
 
 
-# 儲存檔案
-def save(file_name, lines):
-    with open(file_name, 'w', encoding='utf-8') as f:
+def save(file_name, lines, encoding='utf-8'):
+    with open(file_name, 'w') as f:
         for line in lines:
-            f.write(str(line) + '\n')
-
+            f.write(line + '\n')
 
 def main():
-    filename = 'yuzzzzzzzzzzz.txt'
+    filename = '原始檔yuzzzz.txt'
     lines = read_file(filename)
     lines = field(lines)
     lines = convert(lines)
-    # save('[LINE]fa_output.csv',lines)
-    # save('[LINE]fa_output.txt',lines)
-    save('[LINE]fa_output.doc',lines)
-main()
+    save('轉換後與yuz.txt', lines)
+    # save('轉換後與yuz.csv',lines)
+
+main():

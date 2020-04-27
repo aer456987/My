@@ -34,13 +34,13 @@ def analyzedata(data):
 def main():
     url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
     count = 0
-    while count < 3:
+    while count < 5:
         count += 1
         print('=================================\n' +
-            '【第', count, '頁】\n' +
+            '【第', count, '次抓取】\n' +
             '================================='
         )
         data = getdata(url)
-        data = 'https://www.ptt.cc' + analyzedata(data)
+        url = 'https://www.ptt.cc' + analyzedata(data)
 
 main()
